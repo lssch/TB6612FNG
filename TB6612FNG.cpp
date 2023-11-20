@@ -3,7 +3,6 @@
 //
 
 #include "TB6612FNG.h"
-#include <cmath>
 
 void Channel::off() {
   current_speed = 0;

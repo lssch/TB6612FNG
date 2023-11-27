@@ -3,6 +3,7 @@
 //
 
 #include "TB6612FNG.h"
+#include <cmath>
 
 void Channel::off() {
   current_speed = 0;
@@ -33,7 +34,6 @@ void Channel::set_speed() {
   }
 
   // set pwm according to the current speed
-
   float scale = static_cast<float>(abs(current_speed))/100;
 
   port.htim->Instance->CCR1 = scale*port.htim->Instance->ARR;
@@ -45,29 +45,31 @@ void Channel::set_port(channel_port_t port_) {
 }
 
 TB6612FNG::TB6612FNG(GPIO_TypeDef* gpio_port_enb, uint16_t gpio_pin_enb,
-                     GPIO_TypeDef* gpio_port_i1, uint16_t gpio_pin_i1,
-                     GPIO_TypeDef* gpio_port_i2, uint16_t gpio_pin_i2,
-                     TIM_HandleTypeDef *timer_, uint16_t channel_):
+                     GPIO_TypeDef* gpio_port_m1_i1, uint16_t gpio_pin_m1_i1,
+                     GPIO_TypeDef* gpio_port_m1_i2, uint16_t gpio_pin_m1_i2,
+                     GPIO_TypeDef* gpio_port_m2_i1, uint16_t gpio_pin_m2_i1,
+                     GPIO_TypeDef* gpio_port_m2_i2, uint16_t gpio_pin_m2_i2,
+                     TIM_HandleTypeDef *timer_m1_, uint16_t channel_m1_,
+                     TIM_HandleTypeDef *timer_m2_, uint16_t channel_m2_):
                      gpio_port_enable(gpio_port_enb),
                      gpio_pin_enable(gpio_pin_enb) {
   channel_port_t port_a = {
-    .gpio_port_1 = gpio_port_i1,
-    .gpio_pin_1 = gpio_pin_i1,
-    .gpio_port_2 = gpio_port_i2,
-    .gpio_pin_2 = gpio_pin_i2,
-    .htim = timer_,
-    .channel = channel_
+    .gpio_port_1 = gpio_port_m1_i1,
+    .gpio_pin_1 = gpio_pin_m1_i1,
+    .gpio_port_2 = gpio_port_m1_i2,
+    .gpio_pin_2 = gpio_pin_m1_i2,
+    .htim = timer_m1_,
+    .channel = channel_m1_
   };
-  /*
-  channel_port_t port_a = {
-          .gpio_port_1 = gpio_port_bi1,
-          .gpio_pin_1 = gpio_pin_bi1,
-          .gpio_port_2 = gpio_port_bi2,
-          .gpio_pin_2 = gpio_pin_bi2,
-          .htim = timer_b,
-          .channel = channel_b
+
+  channel_port_t port_b = {
+          .gpio_port_1 = gpio_port_m2_i1,
+          .gpio_pin_1 = gpio_pin_m2_i1,
+          .gpio_port_2 = gpio_port_m2_i2,
+          .gpio_pin_2 = gpio_pin_m2_i2,
+          .htim = timer_m2_,
+          .channel = channel_m2_
   };
-  */
   ch_a.set_port(port_a);
   ch_b.set_port(port_a);
 }

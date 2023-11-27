@@ -5,8 +5,7 @@
 #ifndef STM32_MOTORDRIVER_TB6612FNG_H
 #define STM32_MOTORDRIVER_TB6612FNG_H
 
-#include "stm32f4xx_hal_gpio.h"
-#include "stm32f4xx_hal_tim.h"
+#include "stm32f4xx_hal.h"
 
 typedef struct _channel_port_t{
   GPIO_TypeDef* gpio_port_1;
@@ -36,9 +35,11 @@ public:
   Channel ch_b;
 
   TB6612FNG(GPIO_TypeDef* gpio_port_enb, uint16_t gpio_pin_enb,
-            GPIO_TypeDef* gpio_port_i1, uint16_t gpio_pin_i1,
-            GPIO_TypeDef* gpio_port_i2, uint16_t gpio_pin_i2,
-            TIM_HandleTypeDef *timer_, uint16_t channel_);
+            GPIO_TypeDef* gpio_port_m1_i1, uint16_t gpio_pin_m1_i1,
+            GPIO_TypeDef* gpio_port_m1_i2, uint16_t gpio_pin_m1_i2,
+            GPIO_TypeDef* gpio_port_m2_i1, uint16_t gpio_pin_m2_i1,
+            GPIO_TypeDef* gpio_port_m2_i2, uint16_t gpio_pin_m2_i2,
+            TIM_HandleTypeDef *timer_m1_, uint16_t channel_m1_, TIM_HandleTypeDef *timer_m2_, uint16_t channel_m2_);
   void enable();
   void disable();
 private:

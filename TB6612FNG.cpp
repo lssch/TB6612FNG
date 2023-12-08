@@ -17,12 +17,12 @@ void Channel::move(int8_t speed) {
 }
 
 void Channel::brake() {
+  move(0);
   HAL_GPIO_WritePin(port.gpio_port_1, port.gpio_pin_1, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(port.gpio_port_2, port.gpio_pin_2, GPIO_PIN_RESET);
 }
 
 void Channel::set_speed() {
-
   if (current_speed > 0) {
     // Drive CW
     HAL_GPIO_WritePin(port.gpio_port_1, port.gpio_pin_1, GPIO_PIN_SET);
@@ -71,7 +71,7 @@ TB6612FNG::TB6612FNG(GPIO_TypeDef* gpio_port_enb, uint16_t gpio_pin_enb,
           .channel = channel_m2_
   };
   ch_a.set_port(port_a);
-  ch_b.set_port(port_a);
+  ch_b.set_port(port_b);
 }
 
 void TB6612FNG::enable() {
@@ -79,5 +79,7 @@ void TB6612FNG::enable() {
 }
 
 void TB6612FNG::disable() {
+  ch_a.brake();
+  ch_b.brake();
   HAL_GPIO_WritePin(gpio_port_enable, gpio_pin_enable, GPIO_PIN_RESET);
 }

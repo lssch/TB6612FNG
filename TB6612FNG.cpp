@@ -75,6 +75,8 @@ TB6612FNG::TB6612FNG(GPIO_TypeDef* gpio_port_enb, uint16_t gpio_pin_enb,
 }
 
 void TB6612FNG::enable() {
+  ch_a.move(0);
+  ch_b.move(0);
   HAL_GPIO_WritePin(gpio_port_enable, gpio_pin_enable, GPIO_PIN_SET);
 }
 

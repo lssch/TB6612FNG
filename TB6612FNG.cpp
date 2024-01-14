@@ -11,7 +11,7 @@ void Channel::off() {
   brake();
 }
 
-void Channel::move(int8_t speed) {
+void Channel::move(const int8_t speed) {
   current_speed = speed;
   set_speed();
 }
@@ -40,7 +40,7 @@ void Channel::set_speed() {
   HAL_TIM_PWM_Start(port.htim, port.channel);
 }
 
-void Channel::set_port(channel_port_t port_) {
+void Channel::set_port(const channel_port_t port_) {
   port = port_;
 }
 
